@@ -12,7 +12,7 @@ function accessToRecord(id){
         video: {
             mandatory: {
                 chromeMediaSource: "desktop",
-                chromeMediaSourceId:id
+                chromeMediaSourceId:screenId
             }
         }
     }, startStream,failedStream);
@@ -22,10 +22,13 @@ function startStream(stream) {
     console.log('Receiving Data from User');
     const mediaStream = new MediaStream();
     const video = document.getElementById('screenMain');
-    video.srcObject = mediaStream;
-    stream.onended = function (){
-        console.log("Video Recording Session Ended");
+    try {
+        video.srcObject = stream;
+    } catch (error) {
+        console.log('error occured')
     }
+    console.log(video.srcObject);
+    console.log('function completed ......');
 }
 
 function failedStream(){
