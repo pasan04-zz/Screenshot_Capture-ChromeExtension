@@ -1,0 +1,22 @@
+{
+    "name": "Screen Capture",
+    "version": "1.0",
+    "description": "Screen Capture tool",
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "browser_action": {
+        "default_icon": "images/icon-32.png",
+        "default_title": "Take a screen shot!" 
+    },
+    "icons": {
+        "32": "images/icon-32.png",
+        "64": "images/icon-64.png",
+        "128": "images/icon-128.png"
+    },
+    "permissions": [
+        "activeTab"
+    ],
+    "manifest_version": 2
+}
