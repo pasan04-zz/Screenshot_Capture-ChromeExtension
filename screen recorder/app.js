@@ -1,10 +1,8 @@
 document.getElementById('startRecording').addEventListener('click', recordClick, false);
+document.getElementById('stopRecording').addEventListener('click',stopRecording,false);
 var recordedChunks = [];
 
 var options = { mimeType: "video/webm; codecs=vp9" };
-
-// mediaRecorder.ondataavailable = handleDataAvailable;
-// mediaRecorder.start();
 
 function recordClick(){
     chrome.desktopCapture.chooseDesktopMedia(["screen","window"], accessToRecord);
@@ -35,16 +33,13 @@ function startStream(stream) {
     } catch (error) {
         console.log('error occured')
     }
-    // console.log(video.srcObject);
-    console.log('function completed ......');
+    console.log('function completed...');
 }
 
 function handleDataAvailable(event) {
     console.log("data-available");
-    console.log(event.data.size);
     if (event.data.size > 0) {
       recordedChunks.push(event.data);
-      console.log(recordedChunks);
       download();
     } else {
       console.log("Data not avaiable !!");
@@ -61,18 +56,37 @@ function download() {
     document.body.appendChild(a);
     a.style = "display: none";
     a.href = url;
-    a.download = "test.webm";
+    a.download = "video.webm";
+    recordedChunks = [];
     a.click();
     window.URL.revokeObjectURL(url);
-    console.log('OKAAAAAAAAAAAAAY DOWNLOADED');
 }
   
 
 function failedStream(){
-    console.log('Some sort of error !');
+    console.log('Some error occured in the streaming the video !');
+}
+
+function stopRecording(){
+    mediaRecorder.stop();
 }
 
 setTimeout(event => {
     console.log("stopping");
     mediaRecorder.stop();
-  }, 200000);
+}, 200000);
+
+
+chrome.runtime.sendMessage({command: "fetch"}, (response) => {
+    showData(response.data);
+});
+  
+  
+chrome.runtime.sendMessage({command: "post", data:"Test Data"}, (response) => {
+    showData(response.data);
+});
+  
+  
+var showData = function(data) {
+    console.log('From Extension--', data);
+}
